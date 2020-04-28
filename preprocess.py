@@ -36,6 +36,7 @@ if __name__ == '__main__':
     print("What kind of data you are trying to process?")
     print("  [1] Simulator (.csv)")
     print("  [2] Composer  (.dcexp)")
+    print("  [3] DT        (.txt)")
     ans = int(input())
 
     processed_files = []
@@ -49,6 +50,12 @@ if __name__ == '__main__':
         elif ans == 2:
             # Composer data
             old_file, new_file = collectData(file, 8, '.dcexp', ', ', time_tuple)
+            interpolateMissingData(new_file, 1)
+            reTime(new_file, 0)
+            processed_files.append(old_file)
+        elif ans == 3:
+            # DT data
+            old_file, new_file = collectData(file, 8, '.txt', ', ', time_tuple)
             interpolateMissingData(new_file, 1)
             reTime(new_file, 0)
             processed_files.append(old_file)

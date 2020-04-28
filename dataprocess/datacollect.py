@@ -28,7 +28,6 @@ def collectData(file, data_start_row, file_ext, delimiter_out, time_tuple=(0, fl
     # Always written like: time [ms], Time [s] or Time(s)
     # Picks the unit inside brackets / parantheses
     def getTimeUnit(string):
-        string = string.lower()
         m = re.search(r'\[\w+\]|\(\w+\)', string)
         unit = m.group(0)[1:-1]
         return unit
@@ -54,7 +53,7 @@ def collectData(file, data_start_row, file_ext, delimiter_out, time_tuple=(0, fl
 
         csv_copy.close()
 
-        print("Processed '{}' ({} rows).".format(file, idx+1)) 
+        print("Processed '{}' ({} lines).".format(file, idx+1)) 
     return (file, new_filename)
 
 if __name__ == '__main__':

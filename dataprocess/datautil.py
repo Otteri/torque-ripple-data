@@ -7,11 +7,18 @@ import re
 # with other kind of data.
 
 # Various filetypes may require different data splitting schemes
+# Data row: one line of data.
 def splitData(data_row, file_ext):
+    # Composer data
     if(file_ext) == '.dcexp':
         return re.split(r'\t+', data_row)
+    # Simulator data
     elif(file_ext) == '.csv':
         return re.split(r',', data_row)
+    # DT data
+    elif(file_ext) == '.txt':
+        data_row = re.sub(r'\t\n', '\n', data_row)
+        return re.split(r'\t', data_row)
 
 # Removes extension and possible copy number from the filename
 def getBaseName(filename):
