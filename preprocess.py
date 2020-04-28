@@ -55,7 +55,7 @@ if __name__ == '__main__':
             processed_files.append(old_file)
         elif ans == 3:
             # DT data
-            old_file, new_file = collectData(file, 8, '.txt', ', ', time_tuple)
+            old_file, new_file = collectData(file, 0, '.txt', ', ', time_tuple=time_tuple, convert=(1, 2000))
             interpolateMissingData(new_file, 1)
             reTime(new_file, 0)
             processed_files.append(old_file)
