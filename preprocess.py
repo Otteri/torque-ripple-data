@@ -1,6 +1,7 @@
 from dataprocess.interpolate import interpolateMissingData
 from dataprocess.datacollect import collectData
 from dataprocess.retime import reTime
+from dataprocess.avgfilter import avgFilterData
 from os import remove, walk, getcwd
 import argparse
 import sys
@@ -12,7 +13,9 @@ def parseArgs(args=sys.argv[1:]):
     parser = argparse.ArgumentParser()
     parser.add_argument("--start_time", type=float, default=float('-inf'), help="Start data collection [s]")
     parser.add_argument("--end_time", type=float, default=float('inf'), help="Stop data collection [s]")
-    parser.add_argument("--time_idx", type=int, default=0, help="Time column index in datafile")
+    parser.add_argument("--time_column", type=int, default=0, help="Time column index in datafile")
+    parser.add_argument("--conversion_multiplier", type=int, default=1, help="Multiplier")
+    parser.add_argument("--conversion_column", type=int, default=1, help="Column index of converted signal")
     return parser.parse_args(args)
 
 def askFileRemove(files):
@@ -25,18 +28,19 @@ def askFileRemove(files):
 if __name__ == '__main__':
     args = parseArgs()
 
-    print("Info: Using column index '{}' for the time data".format(args.time_idx))
-    time_tuple = (args.time_idx, args.start_time, args.end_time)
+    print("Info: Using column index '{}' for the time data".format(args.time_column))
+    time_tuple = (args.time_column, args.start_time, args.end_time)
         
     directory_path = input("Which files require processing? Give full path to the directory:\n")
     (_, _, files) = next(walk(directory_path))
     files = [directory_path + '\\' + file for file in files]
     print("Files from '{}' will be processed.\n".format(getcwd()))
 
-    print("What kind of data you are trying to process?")
+    print("What kind of data are you trying to process?")
     print("  [1] Simulator (.csv)")
     print("  [2] Composer  (.dcexp)")
     print("  [3] DT        (.txt)")
+    print("  [4] FEM       (.csv)")
     ans = int(input())
 
     processed_files = []
@@ -55,9 +59,16 @@ if __name__ == '__main__':
             processed_files.append(old_file)
         elif ans == 3:
             # DT data
-            old_file, new_file = collectData(file, 0, '.txt', ', ', time_tuple=time_tuple, convert=(1, 2000))
+            convert = (args.conversion_column, args.conversion_multiplier) # Defaults do nothing...
+            old_file, new_file = collectData(file, 0, '.txt', ', ', time_tuple=time_tuple, convert=convert)
             interpolateMissingData(new_file, 1)
             reTime(new_file, 0)
+            processed_files.append(old_file)
+        elif ans == 4:
+            # FEM data
+            old_file, new_file = collectData(file, 2, '.fem', ', ', time_tuple=(0, 2.0, 3.0))
+            reTime(new_file, 0, 'ms')
+            avgFilterData(new_file, 2, 3, dtype='.csv', n=150)
             processed_files.append(old_file)
         else:
             print("Invalid selection")
