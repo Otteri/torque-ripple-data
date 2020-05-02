@@ -32,7 +32,7 @@ def getOneSidedFFT(times, values):
     return (f1, P1)
 
 # Finds the best match value-index from the array
-def find_nearest_idx(array, value):
+def findNearestIdx(array, value):
     array = np.asarray(array)
     idx = (np.abs(array - value)).argmin()
     return idx

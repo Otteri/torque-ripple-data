@@ -1,2 +1,3 @@
 Experiment/**/*.csv
+experimental-data/**/*.csv
 dataprocess/__pycache__/

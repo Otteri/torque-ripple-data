@@ -1,4 +1,4 @@
-from dataprocess.datautil import convertToSeconds
+from dataprocess import datautil
 from os import remove, rename
 from glob import glob
 import csv
@@ -15,14 +15,16 @@ import csv
 # time_unit (str): unit used in the input file.
 def reTime(file, time_idx, time_unit='s'):
     with open(file, mode='r') as csv_file:
-        copy = open(file + "_copy", 'w')
+        #copy = open(file + "_copy", 'w')
         csv_reader = csv.reader(csv_file, delimiter=',')
-        csv_copy = csv.writer(copy, delimiter=',', lineterminator = '\n',
-            quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        #csv_copy = csv.writer(copy, delimiter=',', lineterminator = '\n',
+        #    quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        new_filename = datautil.getUniqueFilename(file)
+        csv_copy = open(new_filename, 'w')
 
         original_start_time = None
         for line_count, row in enumerate(csv_reader):
-            time = convertToSeconds(float(row[time_idx]), time_unit)
+            time = datautil.convertToSeconds(float(row[time_idx]), time_unit)
             if line_count == 0:
                 # Do error checking for the first line
                 # if time already starts at zero -> skip.
@@ -35,18 +37,18 @@ def reTime(file, time_idx, time_unit='s'):
                     raise ValueError('Data values must be numeric')
 
                 original_start_time = time # store the time
-                row[time_idx] = 0.0 # We wanted the time to start at zero
-                csv_copy.writerow(row)
+                row[time_idx] = str(0.0) # We wanted the time to start at zero
+                datautil.writeDataRow(csv_copy, row)
             else:
-                row[time_idx] = time - original_start_time
-                csv_copy.writerow(row)
+                row[time_idx] = str(time - original_start_time)
+                datautil.writeDataRow(csv_copy, row)
 
-        copy.close()
+        csv_copy.close()
 
     remove(file)
-    rename(file + "_copy", file)
+    rename(new_filename, file)
+    print("Info: '{}' has been zero timed".format(file))
 
 if __name__ == '__main__':
-    # get all the CSV-files in the same directory as this script
-    files = glob('*' + '.csv')
-    reTime(files, 0, 'ms')
+    file = input("Give file path:\n")
+    reTime(file, 0, 'ms')
