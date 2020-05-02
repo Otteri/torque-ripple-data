@@ -1,5 +1,6 @@
-from os.path import splitext, isfile
+from pathlib import Path
 import numpy as np
+import os
 import re
 
 # Functions that can be used in multiple files
@@ -7,37 +8,44 @@ import re
 # with other kind of data.
 
 # Various filetypes may require different data splitting schemes
+# Collect only the values separated by the delimiter into array
 # Data row: one line of data.
-# TODO: line end should be the last item in the list
 def splitDataRow(data_row, file_ext):
     # Composer data
     if(file_ext) == '.dcexp':
-        new_row = re.split(r'\t+', data_row)
+        new_row = re.split(r'\t+|\n', data_row)
     # Simulator data
     elif(file_ext) == '.csv':
-        new_row = re.split(r',', data_row)
+        new_row = re.split(r',|\n', data_row)
+    # Fem data
+    elif(file_ext) == '.fem':
+        new_row = re.split(r';|\n', data_row)
     # DT data
     elif(file_ext) == '.txt':
-        new_row = re.split(r'\t', data_row)
+        new_row = re.split(r'\t|\n', data_row)
     else:
         raise ValueError('Unknown file extensions passed')    
     return new_row
 
-# Removes extension and possible copy number from the filename
+# Removes preceding path, file extension and possible copy number
 def getBaseName(filename):
-    base_name = splitext(filename)[0]
+    base_name = os.path.basename(filename)
+    base_name = os.path.splitext(base_name)[0]
     base_name = re.split(r'\(\d\)', base_name)[0]
     return base_name
     
 # Increase index in the filename until the name doesn't conflict
 # By default no index is given.
-def getUniqueFilename(filename):
+def getUniqueFilename(file):
     i = 1
-    base_name = getBaseName(filename)
-    new_filename = base_name + '.csv'
-    while isfile(new_filename):
-        new_filename = base_name + '(' + str(i) + ')' + '.csv'
+    p = Path(file)
+    #print(p.parent)
+    base_name = getBaseName(file)
+    new_filename = os.path.join(str(p.parent), base_name + '(' + str(i) + ')' + '.csv')
+    while os.path.isfile(new_filename):
+        new_filename = os.path.join(str(p.parent), base_name + '(' + str(i) + ')' + '.csv')
         i += 1
+    print("new filename:", new_filename)
     return new_filename
 
 def convertToSeconds(value, original_unit):
@@ -51,3 +59,11 @@ def convertToSeconds(value, original_unit):
         return value * 1e-9
     else:
         raise ValueError("Unknown unit")
+
+# Writes the data rows so that line endings go correctly
+# Row: array of values
+# Could possibly utilize csv-writer
+def writeDataRow(file, row):
+    if row[-1].isspace() or row[-1] == '':
+        row = row[0:-1]
+    file.write(', '.join(row) + '\n')
