@@ -29,6 +29,7 @@ def getOneSidedFFT(times, values):
     P1 = P2[0:round(L/2)]         # One sided is half the length
     P1[2:-1] = 2*P1[2:-1]         # Double the values
     f1 = f2[0:round(L/2)]
+    print("zero:", P1[0])
     return (f1, P1)
 
 # Finds the best match value-index from the array

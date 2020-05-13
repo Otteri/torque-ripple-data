@@ -6,10 +6,14 @@ import numpy as np
 import argparse
 import sys
 
+color1 = '#0896d3'
+color2 = '#69c386'
+color3 = '#e15129'
+
 def parseArgs(args=sys.argv[1:]):
     parser = argparse.ArgumentParser()
     parser.add_argument("--speed", type=int, default=None, help="Speed [rpm]",required=True)
-    parser.add_argument("--poles", "-Np", type=int, help="Number of poles")
+    #parser.add_argument("--poles", "-Np", type=int, help="Number of poles")
     parser.add_argument("--pole_pairs", "-p", type=int, help="Number of pole pairs")
     parser.add_argument("--dpi", type=int, default=150, help="figure resolution")
     parser.add_argument("--save", type=int, help="save figure")
@@ -18,7 +22,7 @@ def parseArgs(args=sys.argv[1:]):
     parser.add_argument("--file3", "-f3", type=str, help="Csv-data file 3", required=True)
 
     args = parser.parse_args(args)
-    if not (args.poles or args.pole_pairs):
+    if not (args.pole_pairs):
         raise parser.error('Either poles or pole_pairs must be provided')
 
     return args
@@ -48,15 +52,15 @@ def tripleBarChart(ax, y1, y2, y3):
     bar_width = 0.20
 
     ax.bar(index, y1, width=bar_width, align='center',
-    color='r',
+    color=color1,
     label='PI') 
 
     ax.bar(index + bar_width, y2, width=bar_width, align='center',
-    color='b',
+    color=color2,
     label='PI-ILC')
 
     ax.bar(index + 2 * bar_width, y3, width=bar_width, align='center',
-    color='g',
+    color=color3,
     label='PI-Qlr')
 
     plt.xlabel('Harmonic order no.')
@@ -77,13 +81,14 @@ def plot(t1, t2, t3, y1, y2, y3, args):
     ax2.set_title('PI-ILC')
     ax3.set_title('PI-Qlr')
     ax4.set_title('Harmonics')
-    ax2.set_ylabel('Amplitude [pu.]')
+    ax2.set_ylabel('Speed amplitude [rpm]')
+    #ax2.set_ylabel('Speed amplitude [pu.]')
     ax3.set_xlabel('Time [s]')
 
     # Time plots
-    ax1.plot(t1, y1, linewidth=0.8, color='red')
-    ax2.plot(t2, y2, linewidth=0.8, color='blue')
-    ax3.plot(t3, y3, linewidth=0.8, color='green')
+    ax1.plot(t1, y1, linewidth=0.8, color=color1)
+    ax2.plot(t2, y2, linewidth=0.8, color=color2)
+    ax3.plot(t3, y3, linewidth=0.8, color=color3)
 
     # Compute the locations and the harmonics itself
     _, y1 = getInterestingHarmonics(t1, y1, args.speed, args.pole_pairs)

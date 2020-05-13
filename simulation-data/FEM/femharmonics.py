@@ -5,13 +5,12 @@ import math
 import ntpath
 from glob import glob
 
-DPI = 60
+DPI = 150
 
 def fluxHarmonics(X, Y, fundamental_hz):
 
     fig, ax = plt.subplots(figsize=(16,10), dpi=DPI)
     ax.vlines(x=X, ymin=0, ymax=Y, color='mediumblue', alpha=0.7, linewidth=6)
-    #Y[0:12] = -500 # Hide from plot, so axis break shows nicely
     ax.scatter(x=X, y=Y, s=80, color='mediumblue', alpha=0.8)
     plt.tick_params(labelsize=16)
     ax.set_ylabel('Amplitude [Nm]', fontsize=20)
@@ -44,15 +43,19 @@ def coggingHarmonics(X, Y, fundamental_hz):
 # Plot harmonic order on x-axle and amplitude on y-axle.
 def harmonics(X, Y):
     X2, Y2 = [], []
-    for i in range(0, 49, 1):
+    for i in range(0, 50, 1):
         Y2.append(Y[i])
         X2.append(i)
 
     fig, ax = plt.subplots(figsize=(16,10), dpi=DPI)
-    ax.vlines(x=X2, ymin=0, ymax=Y2, color='mediumblue', alpha=0.7, linewidth=6)
-    ax.scatter(x=X2, y=Y2, s=80, color='mediumblue', alpha=0.8)
-    ax.set_ylabel('Torque amplitude [Nm]', fontsize=20)
-    ax.set_xlabel('Harmonic order n', fontsize=20)
+    plt.rc('grid', linestyle='dotted', color='silver')
+    plt.grid(True)
+    ax.set_axisbelow(True)
+    plt.margins(.01, .025)
+    ax.vlines(x=X2, ymin=0, ymax=Y2, color='mediumblue', alpha=1.0, linewidth=6)
+    ax.scatter(x=X2, y=Y2, s=80, color='mediumblue', alpha=1.0)
+    ax.set_ylabel('Torque amplitude [Nm]', fontsize=20, labelpad=30)
+    ax.set_xlabel('Harmonic order no.', fontsize=20, labelpad=6)
 
     #ax.set_yticks(np.arange(0,6, step=0.5))
     ax.set_xticks(np.arange(0, 50, step=2))
@@ -60,6 +63,7 @@ def harmonics(X, Y):
     ax.tick_params(which='major', length=6)
     ax.tick_params(which='minor', length=4)
     ax.tick_params(labelsize=16)
+
 
 def main():
     # Fundamental frequency of the motor
