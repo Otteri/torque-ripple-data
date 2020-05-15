@@ -1,0 +1,25 @@
+PI-ILC-MS4887
+
+MS4887-motor was connected to a load machine. Therefore, it was possible
+to test the ILC performance under different loads and speeds. A resolver
+and a torque-transducer readings were recorded.
+
+Measurements were captured in generating and motoring modes.
+Since the compensator was known to perform poorly in high speeds, 
+and since the generating-mode 600rpm measurerements proved this, 
+it was not seen necessary to do 600rpm measurements again in motoring mode.
+
+The loads were recorded with respect to the load machine.
+In order to obtain load values with respect to the machine running the ILC,
+the measured load-values must be multiplied with a transformation coefficient:
+0.8356.
+
+---
+
+PI-ILC-SDM251
+
+This motor was known to have high cogging torque, so it was perfect for verifying
+the results. However, the machine was not connected to anywhere so only no-load
+experiments were possible. In orded to obtain additional data, different filtering
+times were tested. 3 ms is the default value, which is being always used, unless
+otherwise mentioned as the plan was to have plug-and-play compensator.
