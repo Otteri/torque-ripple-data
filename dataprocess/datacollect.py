@@ -43,7 +43,8 @@ def collectData(file, data_start_row, file_ext, delimiter_out=', ', time_tuple=(
             if idx > data_start_row:
                 time_seconds = datautil.convertToSeconds(float(row[time_tuple[0]]), time_unit)
                 if convert:
-                    row[convert[0]] = str(float(row[convert[0]]) * convert[1])
+                    for c in convert: # iterate through all conversion
+                        row[c[0]] = str(float(row[c[0]]) * c[1])
 
                 if time_tuple[1] <= time_seconds <= time_tuple[2]:
                     datautil.writeDataRow(csv_copy, row)

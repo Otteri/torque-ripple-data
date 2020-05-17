@@ -15,8 +15,7 @@ def parseArgs(args=sys.argv[1:]):
     parser.add_argument("--start_time", type=float, default=float('-inf'), help="Start data collection [s]")
     parser.add_argument("--end_time", type=float, default=float('inf'), help="Stop data collection [s]")
     parser.add_argument("--time_column", type=int, default=0, help="Time column index in datafile")
-    parser.add_argument("--conversion_multiplier", type=float, default=1, help="Multiplier")
-    parser.add_argument("--conversion_column", type=int, default=1, help="Column index of converted signal")
+    parser.add_argument("--convert", type=str, default=1, help="(Col idx, Multiplier)")
     return parser.parse_args(args)
 
 def askFileRemove(files):
@@ -26,8 +25,24 @@ def askFileRemove(files):
             remove(file)
             print("Removed '{}'".format(file))
 
+def pairwise(iterable):
+    "s -> (s0, s1), (s2, s3), (s4, s5), ..."
+    a = iter(iterable)
+    return zip(a, a)
+
+def handleConversion(args):
+    convert = []
+    if args.convert:
+        elements = args.convert.split(',')
+        for col, mul in pairwise(elements):
+            convert.append((int(col), float(mul)))
+    return convert
+
 if __name__ == '__main__':
     args = parseArgs()
+
+    convert = handleConversion(args)
+    print("convert:", convert)
 
     print("Info: Using column index '{}' for the time data".format(args.time_column))
     time_tuple = (args.time_column, args.start_time, args.end_time)
@@ -52,8 +67,8 @@ if __name__ == '__main__':
     for file in files:
         if ans == 1:
             # Simulator data
-            convert = (args.conversion_column, args.conversion_multiplier) # Defaults do nothing...
-            old_file, new_file = collectData(file, 2, '.csv', ', ', time_tuple=time_tuple, convert=convert)
+            #convert = (args.conversion_column, args.conversion_multiplier) # Defaults do nothing...
+            old_file, new_file = collectData(file, 1, '.csv', ', ', time_tuple=time_tuple, convert=convert)
             interpolateMissingData(new_file, 1)
             reTime(new_file, 0, 'ms') # make time to start from 0
             processed_files.append(old_file)
@@ -65,7 +80,7 @@ if __name__ == '__main__':
             processed_files.append(old_file)
         elif ans == 3:
             # DT data
-            convert = (args.conversion_column, args.conversion_multiplier) # Defaults do nothing...
+            #convert = (args.conversion_column, args.conversion_multiplier) # Defaults do nothing...
             old_file, new_file = collectData(file, 0, '.txt', ', ', time_tuple=time_tuple, convert=convert)
             interpolateMissingData(new_file, 1)
             reTime(new_file, 0)
