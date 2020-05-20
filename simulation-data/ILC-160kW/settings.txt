@@ -1,0 +1,3 @@
+9 Phi, 3 gamma, 0.05 alpha.
+50 -- 70 s simulations
+
