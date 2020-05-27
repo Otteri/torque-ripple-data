@@ -20,7 +20,7 @@ for i in range(0, 99, 2):
     X2.append(i)
 
 
-fig, ax = plt.subplots(figsize=(16,10), dpi=150)
+fig, ax = plt.subplots(figsize=(16,10), dpi=130)
 plt.yscale('log')
 plt.margins(.01, .025)
 plt.grid(True, which="both", axis="y")
@@ -32,7 +32,7 @@ ax.set_xlabel('Harmonic order no.', fontsize=20, labelpad=30)
 
 # labels and ticks
 ax.set_xticks(np.arange(0, 99, step=4))
-labels = np.arange(0, 299, step=2)
+labels = np.arange(0, 299, step=6)
 ax.set_xticklabels(labels)
 ax.set_xticks(X2[1::2], minor=True)
 ax.tick_params(which='major', length=6)
