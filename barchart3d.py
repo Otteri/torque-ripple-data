@@ -10,7 +10,7 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
                                AutoMinorLocator)
 
 DPI = 150
-BASE_PATH = ".\\simulation-data\\FEM\\cogging-various-speeds\\"
+BASE_PATH = ".\\simulation-data\\FEM\\"
 
 
 def lineChart(x, y):
@@ -104,13 +104,13 @@ plt.xticks(np.arange(0, 26, 6), ticks[::72])
 plt.yticks([60, 240, 480, 960], ('60', '240', '480', '960'))
 plt.yticks(fontsize=10)
 
-cbaxes = fig.add_axes([0.13, 0.12, 0.03, 0.72]) # colorbar pos
-cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap), cax=cbaxes, fraction=0.1, pad=0.2, label='Frequency')
-cbar.set_ticks([])
-cbaxes.yaxis.set_label_position('left')
+#cbaxes = fig.add_axes([0.13, 0.12, 0.03, 0.72]) # colorbar pos
+#cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap), cax=cbaxes, fraction=0.1, pad=0.2, label='Frequency')
+#cbar.set_ticks([])
+#cbaxes.yaxis.set_label_position('left')
 
-ax.set_xlabel('Harmonic order no.')
-ax.set_ylabel('Rpm', labelpad=10)
+ax.set_xlabel('Harmonic order no.', fontsize=10, labelpad=10)
+ax.set_ylabel('Speed (rpm)', labelpad=10)
 ax.set_zlabel('Amplitude [Nm]')
 
 plt.show()

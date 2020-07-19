@@ -32,23 +32,24 @@ def lineChart(filename, times, speeds, torques, torquesf, dpi):
     fig, ax1 = plt.subplots(figsize=(16,10), dpi=dpi)
 
     color1 = 'royalblue'
-    ax1.set_ylabel("Torque [Nm]", color=color1, fontsize=20, labelpad=30)
+    ax1.set_ylabel("Torque [Nm]", color=color1, fontsize=22, labelpad=26)
     #ax1.set(ylim=(120, 175))
-    ax1.set_xlabel("Time [s]", fontsize=20, labelpad=20)
+    ax1.set_xlabel("Time [s]", fontsize=20, labelpad=14)
     d1 = ax1.plot(times, torques, label='torque unfiltered', linewidth=0.8, color='lightblue', alpha=0.45)
     d2 = ax1.plot(times, torquesf, label='torque filtered', linewidth=1.0, color=color1, alpha=1.0)
     #ax1.set(ylim=(95, 185))
     ax1.set(ylim=(110, 170))
-    ax1.tick_params(axis='y', labelcolor='blue', labelsize=14)
+    ax1.tick_params(axis='y', labelcolor='blue', labelsize=16)
+    ax1.tick_params(axis='x', labelcolor='black', labelsize=16)
 
     color2 = 'indianred'
     ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
-    ax2.set_ylabel("Speed [rpm]", color=color2, fontsize=20, labelpad=30)  # we already handled the x-label with ax1
+    ax2.set_ylabel("Speed [rpm]", color=color2, fontsize=22, labelpad=26)  # we already handled the x-label with ax1
     #ax2.set(ylim=(199.5, 200.5))
     #ax2.set(ylim=(199, 201))
     ax2.set(ylim=(199.4, 200.6))
     d3 = ax2.plot(times, speeds, label='speed', linewidth=1.0, color=color2, alpha=1.0)
-    ax2.tick_params(axis='y', labelcolor=color2, labelsize=14)
+    ax2.tick_params(axis='y', labelcolor=color2, labelsize=16)
     tick_spacing = 0.2
     ax2.yaxis.set_major_locator(ticker.MultipleLocator(tick_spacing))
     fig.tight_layout()  # otherwise the right y-label is slightly clipped    
@@ -61,13 +62,16 @@ def lineChart(filename, times, speeds, torques, torquesf, dpi):
     # Create legend
     lns = d2+d1+d3
     labs = [l.get_label() for l in lns]
-    ax1.legend(lns, labs, loc='lower center', ncol=3, fontsize=14)
+    ax1.legend(lns, labs, loc='lower center', ncol=3, fontsize=16)
 
 def lineChart2(filename, times, signal, dpi):
-    plt.figure('1.'+filename, figsize=(16,10), dpi=dpi)
-    plt.ylabel("Speed [rpm]")
-    plt.xlabel("Time [s]")
-    plt.plot(times, signal, linewidth=0.8, color='royalblue')
+    #plt.figure('1.'+filename, figsize=(16,10), dpi=dpi)
+    fig, ax = plt.subplots(figsize=(16,10), dpi=100)
+    plt.ylabel("Speed [rpm]", fontsize=12)
+    plt.xlabel("Time [s]",  fontsize=12)
+    ax.set(xlim=(0, 30))
+    plt.locator_params(axis='y', nbins=10)
+    plt.plot(times, signal, linewidth=0.8, color='royalblue') #color='mediumblue'
 
 def amplitudeSpectrum(filename, times, torques, dpi):
 
@@ -109,7 +113,7 @@ def plot(args):
 
         plt.show(block=True)
         if args.save:
-            plt.savefig(filename + ".svg")
+            plt.savefig(filename + ".pdf")
 
 def main(args):
     plot(args)

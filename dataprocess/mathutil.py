@@ -14,7 +14,7 @@ def percentToBaseUnit(percent_value, nominal_value):
 
 # Computes two sided FFT
 def getFFT(times, values):
-    T = times[1] - times[0]               # sampling interval 
+    T = float(times[1] - times[0])        # sampling interval 
     Fs = (1/T)                            # calculate frequency
     L = int(Fs * (times[-1] - times[0]))  # Signal length
     Y = np.fft.fft(values)
@@ -41,7 +41,50 @@ def findNearestIdx(array, value):
 # Returns interesting harmonics
 def getHarmonicFrequencies(rpm, poles):
     fn = (poles / 2) * (rpm / 60) # fn: electrical
-    return [1*fn, 2*fn, 6*fn, 12*fn, 24*fn]
+    return [1*fn, 2*fn, 6*fn, 12*fn]
+
+# Returns interesting harmonics
+def getSignificantHarmonicFrequencies(rpm, poles):
+    #fn = (poles / 2) * (rpm / 60) # fn: electrical
+    fn = (rpm / 60.0)
+    orders = [0, 1, 2]
+    harmonics = [0, 1*fn, 2*fn]
+    for i in range(3, 999, 1):
+        harmonics.append(i*fn)
+        orders.append(i)
+        print("i:", i)
+    return harmonics, orders
 
 def interpolate(start, end, steps):
     return np.linspace(start, end, steps)
+
+# Returns data corresponding to one mechanical period (one revolution)
+# The data is taken at the end of the list as this is likely
+# to be better than data in the beginning of the list.
+def getDataPeriod(rpm, time, data):
+    fn = rpm / 60.0
+    print("fn:", fn)
+    T = 1.0 / fn
+    idx = 0
+    while (time[idx] - time[0]) < T:
+        print("time:", time[idx], "T:", T)
+        idx = idx + 1
+    print("index:", idx)
+    return data[-idx:] # take the last list items
+
+# pass data from single rotation
+def calculateRipple(data):
+    ripple = np.max(data) - np.min(data)
+    print("mx:", np.max(data), "min:", np.min(data))
+    return ripple
+
+# data1 / data2
+def calculateRippleRatio(data1, data2):
+    r1 = calculateRipple(data1)
+    r2 = calculateRipple(data2)
+    return r1 / r2
+
+# peak-to-peak / nominal value
+def calculateRippleFactor(data, nominal_value):
+    ripple = calculateRipple(data)
+    return (float(ripple) / float(nominal_value)) * 100.0

@@ -1,3 +1,14 @@
 9 Phi, 3 gamma, 0.05 alpha.
 50 -- 70 s simulations
 
+
+
+T_N = 493 Nm
+
+Harmonics:
+1st = 0.6 Nm
+2nd = 0.2 Nm
+6th = 10 Nm
+12th = 3 Nm
+18th = 2 Nm
+24th = 5 Nm
