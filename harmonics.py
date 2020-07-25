@@ -12,9 +12,9 @@ POWER = 6000 # watt
 
 def lineChart(filename, times, torques, dpi):
     plt.figure('1.'+filename, figsize=(16,10), dpi=dpi)
-    plt.ylabel("Amplitude")
+    plt.ylabel("Amplitude", fontsize=16)
     plt.xlabel("Time [s]")
-    plt.plot(times, torques, label='torque', linewidth=0.8)
+    plt.plot(times, torques, label='torque', color='r', linewidth=0.8)
     plt.legend()
 
 def amplitudeSpectrum(filename, times, torques, dpi):
@@ -26,7 +26,7 @@ def amplitudeSpectrum(filename, times, torques, dpi):
     plt.figure('2.'+filename, figsize=(16,10), dpi=dpi)
     ax = plt.gca()
     ymax = max(P1[1:]) # Find max harmonic amplitude (exclude dc)
-    ax.set(xlim=(0, 250), ylim=(0, ymax + 0.05))
+    ax.set(xlim=(0, 250)) # ylim=(ymax + 0.05)
     plt.ylabel("Amplitude")
     plt.xlabel("Frequency [Hz]")
     plt.plot(Fv, P1)
@@ -58,7 +58,7 @@ def main():
 
             # Plot the data
             lineChart(filename, times, speeds, DPI)
-            amplitudeSpectrum(filename, times, speeds, DPI)
+            #amplitudeSpectrum(filename, times, speeds, DPI)
             #plt.savefig(filename + ".svg")
     
     plt.show() # Block

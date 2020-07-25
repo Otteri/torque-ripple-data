@@ -30,6 +30,7 @@ def parseArgs(args=sys.argv[1:]):
     return args
 
 def getInterestingHarmonics(time, y, speed_nom, poles):
+    N = 3 # neighbouring indices that can be selected
     Fv, P1 = mathutil.getOneSidedFFT(time, y)
     frequencies = mathutil.getHarmonicFrequencies(speed_nom, poles)
 
@@ -38,18 +39,18 @@ def getInterestingHarmonics(time, y, speed_nom, poles):
     indices = []
     for harmonic in frequencies:
         idx1 = mathutil.findNearestIdx(Fv, harmonic)
-        idx2 = np.argmax(P1[idx1-5:idx1+5])
-        indices.append(idx1 + (idx2-5))
+        idx2 = np.argmax(P1[idx1-N:idx1+N])
+        indices.append(idx1 + (idx2-N))
     
-    x = (Fv[indices[0]], Fv[indices[1]], Fv[indices[2]], Fv[indices[3]], Fv[indices[4]])
-    y = (P1[indices[0]], P1[indices[1]], P1[indices[2]], P1[indices[3]], P1[indices[4]])
+    x = (Fv[indices[0]], Fv[indices[1]], Fv[indices[2]], Fv[indices[3]])
+    y = (P1[indices[0]], P1[indices[1]], P1[indices[2]], P1[indices[3]])
 
     print("Harmonic frequencies: ", [ '%.3f' % elem for elem in frequencies ])
     print("Matched frequencies:  ", [ '%.3f' % elem for elem in x ])
     return x, y
 
 def tripleBarChart(ax, y1, y2, y3):
-    harmonics_num = 5
+    harmonics_num = 4
     index = np.arange(harmonics_num)
     bar_width = 0.20
 
@@ -59,14 +60,14 @@ def tripleBarChart(ax, y1, y2, y3):
 
     ax.bar(index + bar_width, y2, width=bar_width, align='center',
     color=color2,
-    label='PI-ILC')
+    label='ILC')
 
     ax.bar(index + 2 * bar_width, y3, width=bar_width, align='center',
     color=color3,
-    label='PI-Qlr')
+    label='Q-learning')
 
     ax.set_xticks(index + bar_width)
-    ax.set_xticklabels(('1st', '2nd', '6th', '12th', '24th'))
+    ax.set_xticklabels(('1st', '2nd', '6th', '12th'))
 
 
 def plot(t1, t2, t3, y1, y2, y3, args):
@@ -77,7 +78,7 @@ def plot(t1, t2, t3, y1, y2, y3, args):
     ax3 = fig.add_subplot(gs[2, 0])
     ax4 = fig.add_subplot(gs[:, 1:])
     time_axes = [ax1, ax2, ax3]
-    time_titles = ['PI', 'PI-ILC', 'PI-Qlr']
+    time_titles = ['PI', 'ILC', 'Q-learning']
 
     for i in range(len(time_axes)):
         time_axes[i].set_title(time_titles[i])
@@ -132,8 +133,8 @@ def plot2(t1, t2, t3, t4, t5, t6, y1, y2, y3, y4, y5, y6, args):
 
     # Manual legend
     pi = mpatches.Patch(color=color1, label='PI')
-    pi_ilc = mpatches.Patch(color=color2, label='PI-ILC')
-    pi_qlr = mpatches.Patch(color=color3, label='PI-Qlr')
+    pi_ilc = mpatches.Patch(color=color2, label='ILC')
+    pi_qlr = mpatches.Patch(color=color3, label='Q-learning')
     ax0.legend(handles=[pi, pi_ilc, pi_qlr], ncol=3, loc='upper left', fancybox=True)
 
     # Time plots for speed
@@ -157,16 +158,16 @@ def plot2(t1, t2, t3, t4, t5, t6, y1, y2, y3, y4, y5, y6, args):
     for ax in data_axes:
         ax.grid('y', which='major')
         ax.set_axisbelow(True)
-        ax.grid(linestyle=':', color='silver', axis='y', which='minor')
-        ax.grid(linestyle='--', color='silver', axis='y', which='major')
+        ax.grid(linestyle=':', color='lightgrey', axis='y', which='minor')
+        ax.grid(linestyle='--', color='lightgrey', axis='y', which='major')
         ax.xaxis.grid() # vertical lines
 
     for ax in time_axes:
         ax.set_xlim(0, 10)
         ax.set_ylim(50, 70)
         ax.set_yticks([55, 65], minor=True)
-        ax.grid(linestyle='dotted', color='silver', axis='both', which='minor')
-        ax.grid(linestyle='dotted', color='silver', axis='both', which='major')
+        ax.grid(linestyle='dotted', color='lightgrey', axis='both', which='minor')
+        ax.grid(linestyle='dotted', color='lightgrey', axis='both', which='major')
 
         # Ticks
         minor_locator1 = AutoMinorLocator(5)
@@ -180,17 +181,17 @@ def main():
 
     # Load the data
     colnames = ['time', 'signal']
-    df1 = pd.read_csv(args.file1, names=colnames)
-    df2 = pd.read_csv(args.file2, names=colnames)
-    df3 = pd.read_csv(args.file3, names=colnames)
+    df1 = pd.read_csv(args.file1, names=colnames, delimiter=',')
+    df2 = pd.read_csv(args.file2, names=colnames, delimiter=',')
+    df3 = pd.read_csv(args.file3, names=colnames, delimiter=',')
 
     # Convert pandas datacolumns to numpy arrays
-    t1 = df1['time'].to_numpy()   # [s]
-    y1 = df1['signal'].to_numpy() # SI / pu.
-    t2 = df2['time'].to_numpy()
-    y2 = df2['signal'].to_numpy()
-    t3 = df3['time'].to_numpy()
-    y3 = df3['signal'].to_numpy()
+    t1 = df1['time'].to_numpy(dtype='float64')   # [s]
+    y1 = df1['signal'].to_numpy(dtype='float64') # SI / pu.
+    t2 = df2['time'].to_numpy(dtype='float64')
+    y2 = df2['signal'].to_numpy(dtype='float64')
+    t3 = df3['time'].to_numpy(dtype='float64')
+    y3 = df3['signal'].to_numpy(dtype='float64')
 
     # Read also torque data if provided
     if args.file4 != None:
