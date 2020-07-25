@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from os import remove, walk, getcwd
 import matplotlib.patches as mpatches
 
-BASE_PATH = ".\\experimental-data\\SDM"
+BASE_PATH = ".\\processed\\SDM"
 
 color1 = '#1d9bf0'
 color2 = '#43ccd9'
@@ -96,17 +96,18 @@ def main():
 
             # Convert pandas datacolumns to numpy arrays
             time_data = df['time'].to_numpy()[0:500]     # [s]
-            speed_data = df['speed'].to_numpy()[0:500]   # [rpm]
-            
+            speed_data = df['speed'].to_numpy()[0:500]   # [p.u.]
+            speed_data = speed_data * 2000 # [rpm]
+
             # Shift to zero
             offset = np.mean(speed_data)
             speed_data = speed_data - offset
 
-            if "ilc" in file.lower():
+            if "ilc-on" in file.lower():
                 print("file:", file)
                 ilc_times.append(time_data)
                 ilc_speeds.append(speed_data)
-            elif "qlr" in file.lower():
+            elif "qlr-on" in file.lower():
                 print("file:", file)
                 qlr_times.append(time_data)
                 qlr_speeds.append(speed_data)

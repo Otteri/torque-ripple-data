@@ -11,21 +11,15 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
 from os import remove, walk, getcwd
 from dataprocess import mathutil
 
-color1 = '#0896d3'
-#color2 = None #'#69c386'
-#color3 = '#e15129'
-
-#BASE_PATH = ".\\experimental-data\\speeds"
-BASE_PATH = ".\\experimental-data\\torques"
-
 def parseArgs(args=sys.argv[1:]):
     parser = argparse.ArgumentParser()
     parser.add_argument("--run_speed", type=int, default=None, help="Speed [rpm]", required=True)
     parser.add_argument("--poles", "-Np", type=int, help="Total number of poles", required=True)
     parser.add_argument("--dpi", type=int, default=200, help="figure resolution")
     parser.add_argument("--save", type=int, help="save figure")
-    parser.add_argument("--is_ilc", type=int, help="show ilc in legend if ilc", required=True)
-    parser.add_argument("--is_torque", type=int, help="torque harmonics", required=True)
+    parser.add_argument("--is_ilc", type=int, default=0, help="show ilc in legend if ilc")
+    parser.add_argument("--is_torque", type=int, default=0, help="torque harmonics")
+    parser.add_argument("--folder", type=str, help="Path to folder containing files to be plotted", required=True)
     args = parser.parse_args(args)
     return args
 
@@ -50,6 +44,7 @@ def getInterestingHarmonics(time, y, speed_nom, poles):
 
 
 def doubleBarChart(ax, y1, y2, args):
+    color1 = '#0896d3'
     if args.is_ilc:
         color2 = '#69c386'
         label = 'ILC'
@@ -118,15 +113,8 @@ def plot(t1, y1, t2, y2, args):
 
     for i in range(len(axes)):
         axes[i].set_title(time_titles[i])
-        # Special treatment
-        #if(i == 3):
-        #    axes[3].yaxis.set_minor_locator(minor_locator2)
-        #    axes[3].set_ylim(0, 6.3)
-        #else:
         axes[i].yaxis.set_minor_locator(minor_locator1)
-        axes[i].set_ylim(0, 2.0)            
-        #if args.is_torque:
-
+        axes[i].set_ylim(0, 2.7)            
 
     if args.save:
         plt.savefig("figure.svg", bbox_inches='tight', pad_inches=0)
@@ -141,10 +129,8 @@ def main():
     default_times = []
     default_speeds = []
 
-    (_, _, files) = next(walk(BASE_PATH))
-    files = [BASE_PATH + '\\' + file for file in files]
-    print("Files from '{}' will be processed.\n".format(getcwd()))
-
+    (_, _, files) = next(walk(args.folder))
+    files = [args.folder + '\\' + file for file in files]
     for file in files:
         with open(file, mode='r') as datafile:
 

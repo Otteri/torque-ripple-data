@@ -11,15 +11,21 @@ import sys
 
 def parseArgs(args=sys.argv[1:]):
     parser = argparse.ArgumentParser()
-    parser.add_argument("--file", "-f", type=str, help="Single file to be processed")
     parser.add_argument("--start_time", type=float, default=float('-inf'), help="Start data collection [s]")
     parser.add_argument("--end_time", type=float, default=float('inf'), help="Stop data collection [s]")
     parser.add_argument("--time_column", type=int, default=0, help="Time column index in datafile")
     parser.add_argument("--convert", type=str, default=None, help="(Col idx, Multiplier)")
+    parser.add_argument("--folder", type=str, default=None, help="Foldeer containing files to be processed")
+    parser.add_argument("--auto", type=int, default=0, help="process without asking questions (automatically")
+    parser.add_argument("--data_type", type=int, default=0, help="Data type")
     return parser.parse_args(args)
 
 def askFileRemove(files):
-    ans = input("Delete original datafiles? (y/N)\n")
+    if args.auto:
+        ans = 'y'
+    else:
+        ans = input("Delete original datafiles? (y/N)\n")
+
     if(ans == 'y' or ans == 'Y'):
         for file in files:
             remove(file)
@@ -49,8 +55,10 @@ if __name__ == '__main__':
     print("Info: Using column index '{}' for the time data".format(args.time_column))
     time_tuple = (args.time_column, args.start_time, args.end_time)
         
-    if args.file:
-        files = args.file # process just single given file
+    if args.auto:
+        files = args.folder
+        ans = args.data_type
+        print("auto processing:", files)
     else:
         # process entire directory
         directory_path = input("Which files require processing? Give full path to the directory:\n")
@@ -58,12 +66,12 @@ if __name__ == '__main__':
         files = [directory_path + '\\' + file for file in files]
         print("Files from '{}' will be processed.\n".format(getcwd()))
 
-    print("What kind of data are you trying to process?")
-    print("  [1] Simulator (.csv)")
-    print("  [2] Composer  (.dcexp)")
-    print("  [3] DT        (.txt)")
-    print("  [4] FEM       (.csv)")
-    ans = int(input())
+        print("What kind of data are you trying to process?")
+        print("  [1] Simulator (.csv)")
+        print("  [2] Composer  (.dcexp)")
+        print("  [3] DT        (.txt)")
+        print("  [4] FEM       (.csv)")
+        ans = int(input())
 
     processed_files = []
     for file in files:

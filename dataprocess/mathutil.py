@@ -62,7 +62,6 @@ def interpolate(start, end, steps):
 # to be better than data in the beginning of the list.
 def getDataPeriod(rpm, time, data):
     fn = rpm / 60.0
-    print("fn:", fn)
     T = 1.0 / fn
     idx = 0
     while (time[idx] - time[0]) < T:

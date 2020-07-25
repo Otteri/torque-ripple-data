@@ -65,7 +65,6 @@ def lineChart(filename, times, speeds, torques, torquesf, dpi):
     ax1.legend(lns, labs, loc='lower center', ncol=3, fontsize=16)
 
 def lineChart2(filename, times, signal, dpi):
-    #plt.figure('1.'+filename, figsize=(16,10), dpi=dpi)
     fig, ax = plt.subplots(figsize=(16,10), dpi=100)
     plt.ylabel("Speed [rpm]", fontsize=12)
     plt.xlabel("Time [s]",  fontsize=12)
@@ -101,9 +100,6 @@ def plot(args):
         speeds = df['speed'].to_numpy()   # [rpm]
         torques = df['torque'].to_numpy() # [%]
         torquesf = df['torquef'].to_numpy() # [%]
-
-        #T_nom = mathutil.getNominalTorque(POWER, RPM)
-        #torque_refs = mathutil.percentToBaseUnit(torque_refs, T_nom)
 
         # Plot the data
         lineChart(filename, times, speeds, torques, torquesf, args.dpi)

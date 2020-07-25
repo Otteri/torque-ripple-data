@@ -17,7 +17,7 @@ data_start_row (int): Data starts from this row. (Skips preceding rows).
 file_ext       (str): extension of the files that shall be processed.
 delimeter_out  (str): delimeter to be used in the output data file. Optional.
 time_tuple     (time_col_idx, start_time, end_time), optional.
-convert        (col_idx, multiplier), optional.
+convert        [(col_idx, multiplier), ...], optional.
 """
 def collectData(file, data_start_row, file_ext, delimiter_out=', ', time_tuple=(0, float('-inf'), float('inf')), convert=None):
 

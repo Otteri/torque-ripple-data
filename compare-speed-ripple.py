@@ -13,13 +13,12 @@ color1 = '#0896d3'
 color2 = '#69c386'
 color3 = '#e15129'
 
-BASE_PATH = ".\\experimental-data\\speeds"
-
 def parseArgs(args=sys.argv[1:]):
     parser = argparse.ArgumentParser()
     parser.add_argument("--dpi", type=int, default=200, help="figure resolution")
     parser.add_argument("--save", type=int, help="save figure")
     parser.add_argument("--is_ilc", type=int, help="show ilc in legend if ilc")
+    parser.add_argument("--folder", type=str, help="Path to folder containing files to be plotted", required=True)
     args = parser.parse_args(args)
     return args
 
@@ -81,8 +80,8 @@ def main():
     default_times = []
     default_speeds = []
 
-    (_, _, files) = next(walk(BASE_PATH))
-    files = [BASE_PATH + '\\' + file for file in files]
+    (_, _, files) = next(walk(args.folder))
+    files = [args.folder + '\\' + file for file in files]
     print("Files from '{}' will be processed.\n".format(getcwd()))
 
     for file in files:
