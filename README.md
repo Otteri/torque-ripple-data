@@ -34,6 +34,9 @@ Produces four amplitude spectrums that are side to side.
 Produces four time domain speed graphs.
 `$ python compare-speed-ripple.py --is_ilc 1`
 
+### computer-ripple.py
+`$ python compute-ripple.py --run_speed 60 --nominal 2000 -f1 "<file path1>" -f2 "<file path2>"`
+
 ### plot.py
 Current configuration was used to generate the pulsation graph:
 `$ python plot.py --file "./simulation-data/FEM/torque-speed-pulsations.csv"`
@@ -46,6 +49,7 @@ The data needs to be processed first and then placed to: experimental-data\\SDM
 Simulated speed and torque pulsations
 `$ python simplot.py`
 Then give path to simulation-data/MS4887-simulations/pulsations
+
 
 ### Unused scripts
 These scripts are functional, but were never used for producing images to the thesis.

@@ -29,7 +29,7 @@ def getOneSidedFFT(times, values):
     P1 = P2[0:round(L/2)]         # One sided is half the length
     P1[2:-1] = 2*P1[2:-1]         # Double the values
     f1 = f2[0:round(L/2)]
-    print("zero:", P1[0])
+    #print("Zero component:", P1[0])
     return (f1, P1)
 
 # Finds the best match value-index from the array
@@ -52,7 +52,6 @@ def getSignificantHarmonicFrequencies(rpm, poles):
     for i in range(3, 999, 1):
         harmonics.append(i*fn)
         orders.append(i)
-        print("i:", i)
     return harmonics, orders
 
 def interpolate(start, end, steps):
@@ -67,15 +66,12 @@ def getDataPeriod(rpm, time, data):
     T = 1.0 / fn
     idx = 0
     while (time[idx] - time[0]) < T:
-        print("time:", time[idx], "T:", T)
         idx = idx + 1
-    print("index:", idx)
     return data[-idx:] # take the last list items
 
 # pass data from single rotation
 def calculateRipple(data):
     ripple = np.max(data) - np.min(data)
-    print("mx:", np.max(data), "min:", np.min(data))
     return ripple
 
 # data1 / data2
