@@ -15,7 +15,7 @@ def parseArgs(args=sys.argv[1:]):
     parser.add_argument("--start_time", type=float, default=float('-inf'), help="Start data collection [s]")
     parser.add_argument("--end_time", type=float, default=float('inf'), help="Stop data collection [s]")
     parser.add_argument("--time_column", type=int, default=0, help="Time column index in datafile")
-    parser.add_argument("--convert", type=str, default=1, help="(Col idx, Multiplier)")
+    parser.add_argument("--convert", type=str, default=1, help="(Col idx, Multiplier)", required=True)
     return parser.parse_args(args)
 
 def askFileRemove(files):
