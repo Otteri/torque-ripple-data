@@ -21,33 +21,37 @@ python preprocess --convert 1,-1 and do the same as above.
 
 
 ## Examples calls
-Examples showing how scripts can be called.
+Examples showing how scripts can be used for plotting.
 
 ### barchart3d.py
 `$ python barchart3d.py`
 
 ### compare-harmonics.py
-Produces four amplitude spectrums that are side to side.
+Produces four amplitude spectrums that are side to side.  
 `$ python compare-harmonics.py --poles 8 --run_speed 60 --is_ilc 1 --is_torque 1`
 
 ### compare-speed-ripple.py
-Produces four time domain speed graphs.
+Produces four time domain speed graphs.  
 `$ python compare-speed-ripple.py --is_ilc 1`
 
-### computer-ripple.py
+### compute-ripple.py
 `$ python compute-ripple.py --run_speed 60 --nominal 2000 -f1 "<file path1>" -f2 "<file path2>"`
 
 ### plot.py
-Current configuration was used to generate the pulsation graph:
+Current configuration was used to generate the pulsation graph:  
 `$ python plot.py --file "./simulation-data/FEM/torque-speed-pulsations.csv"`
 
 ### pulsations3d.py
-The data needs to be processed first and then placed to: experimental-data\\SDM
+The data needs to be processed first and then placed to: experimental-data\\SDM  
 `$ python pulsations3d.py`
 
+### sim-harmonics.py
+Creates frequency domain plots that show compensation harmonics and disturbance harmonics.  
+`$python sim-harmonics.py "<some .npy file>"`
+
 ### simplot.py
-Simulated speed and torque pulsations
-`$ python simplot.py`
+Simulated speed and torque pulsations.  
+`$ python simplot.py`  
 Then give path to simulation-data/MS4887-simulations/pulsations
 
 
@@ -67,5 +71,5 @@ $ python compare.py --poles 8 --run_speed 60 --save 1 --file1 "<file1 path>" --f
 $ python compare.py --poles 8 --run_speed 60 --save 1 --file1 "<file1 path>" --file2 "<file2 path>" --file3 "<file3 path>" --file4 "<file4 path>" --file5 "<file5 path>" --file6 "<file6 path>"
 
 #### harmonics.py
-Plots frequency spectrum for all files in a directory. Very convinient script for quickly checking the harmonics. Just call the script and then provide path when it is asked.
+Plots frequency spectrum of all files in a directory. Very convinient script for quickly checking the harmonics. Just call the script and then provide path when it is asked.  
 `$ python harmonics.py`
