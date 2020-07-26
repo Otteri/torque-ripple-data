@@ -10,14 +10,21 @@ which converts and scales the data using other scripts in the repository. The us
 ## Examples calls
 Examples showing how scripts can be used for plotting data.
 
-#### barchart3d.py
+#### barchart3d.py [FEM]
 Creates a 3D barchart showing cogging torque of the 160-kw motor used in the FEM simulations.  
 `$ python barchart3d.py`
 
+#### cogging-harmonics.py [FEM]
+Plots harmonics induced by cogging torque of the FEM motor  
+`$ python cogging.harmonics.py`
+
+#### compare.py
+Plot three (or six) different measurements into same plot view. This plotting script was never used, as compensators should not be compared directly. Example call:  
+`$ python compare.py --poles 8 --run_speed 60 --file1 "./processed/PI-QLR-MS4887/speed_60rpm/Qlr-OFF_50%-load.Monitor(1).csv" --file2 "./processed/PI-ILC-MS4887/motoring/60rpm-speed/ILC-ON_50%-load_2.8phi_1.0gamma_0.15alpha.Monitor(1).csv" --file3 "./processed/PI-QLR-MS4887/speed_60rpm/Qlr-ON_10%-load_T0.02_lambda1.0.Monitor(1).csv"`
+
 #### compare-harmonics.py
 Produces four amplitude spectrums that are side to side.  
-`$ python compare-harmonics.py --poles 8 --run_speed 60 --is_ilc 0 --is_torque 0 --folder ./processed/PI-QLR-MS4887/speed_60rpm/`
-`$ python compare-harmonics.py --poles 8 --run_speed 60 --is_ilc 1 --is_torque 0 --folder ./processed/PI-ILC-MS4887/motoring/60rpm-speed/`
+`$ python compare-harmonics.py --poles 8 --run_speed 60 --is_ilc 0 --is_torque 0 --folder ./processed/PI-QLR-MS4887/speed_60rpm/`  
 
 #### compare-speed-ripple.py
 Produces four time domain speed graphs.  
@@ -27,6 +34,18 @@ Produces four time domain speed graphs.
 #### compute-ripple.py
 Calculates ripple factor using provided data (only prints).  
 `$ python compute-ripple.py --run_speed 60 --nominal 2000 -f1 "./processed/PI-QLR-MS4887/speed_60rpm/Qlr-ON_80%-load_T0.04_lambda1.0.Monitor(1).csv" -f2 "./processed/PI-QLR-MS4887/speed_60rpm/Qlr-OFF_80%-load.Monitor(1).csv"`
+
+#### harmonics.py
+Plots frequency spectrum of all files in a directory. Very convinient script for quickly checking the harmonics. Just call the script and then provide directory path when it is asked.  
+`$ python harmonics.py`
+
+#### logchart-current-measurement-error.py [FEM]
+Creates logarithmic plot, which shows harmonics under intentional current measurement error  
+`$ python logchart-current-measurement-error.py`
+
+#### logchart-flux-harmonics.py [FEM]
+Creates logarithmic plot showing flux harmonics  
+`$ python logchart-flux-harmonics.py`
 
 #### plot.py
 Current configuration generate the pulsation graph, but can be used for plotting various views:  
@@ -43,11 +62,3 @@ Creates frequency domain plots that shows compensation and disturbance harmonics
 #### simplot.py
 Simulated speed and torque pulsations.  
 `$ python simplot.py`  
-
-#### compare.py
-Plot three (or six) different measurements into same plot view. This plotting script was never used, as compensators should not be compared directly. Example call:  
-`$ python compare.py --poles 8 --run_speed 60 --save 1 --file1 "./processed/PI-QLR-MS4887/speed_60rpm/Qlr-OFF_50%-load.Monitor(1).csv" --file2 "./processed/PI-ILC-MS4887/motoring/60rpm-speed/ILC-ON_50%-load_2.8phi_1.0gamma_0.15alpha.Monitor(1).csv" --file3 "./processed/PI-QLR-MS4887/speed_60rpm/Qlr-ON_10%-load_T0.02_lambda1.0.Monitor(1).csv"`
-
-#### harmonics.py
-Plots frequency spectrum of all files in a directory. Very convinient script for quickly checking the harmonics. Just call the script and then provide directory path when it is asked.  
-`$ python harmonics.py`
