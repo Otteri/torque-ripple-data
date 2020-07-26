@@ -7,16 +7,6 @@ import matplotlib.patches as mpatches
 
 BASE_PATH = ".\\processed\\SDM"
 
-color1 = '#1d9bf0'
-color2 = '#43ccd9'
-color3 = '#a0eb9f'
-color4 = '#e0ce75'
-color5 = '#fa9e55'
-color6 = '#ff4926'
-
-#color2 = '#e15129'
-#color1 = '#0896d3'
-
 color1 = '#0896d3'
 color2 = '#69c386'
 color3 = '#e15129'
@@ -25,7 +15,6 @@ def plot(ilc_times, ilc_speeds, qlr_times, qlr_speeds, default_times, default_sp
     # plot the data
     fig = plt.figure()
     ax = fig.gca(projection='3d')
-
 
     ax.plot(ilc_times[0], np.full((500, 1), 1), ilc_speeds[0], label='parametric curve', linewidth=0.8, color=color2)
     ax.plot(ilc_times[1], np.full((500, 1), 2), ilc_speeds[1], label='parametric curve', linewidth=0.8, color=color2)
@@ -70,7 +59,7 @@ def plot(ilc_times, ilc_speeds, qlr_times, qlr_speeds, default_times, default_sp
     ax.legend(handles=[pi, pi_ilc, pi_qlr], ncol=1, loc='upper left', fancybox=True, bbox_to_anchor=(0.13, 0.85), fontsize=14)
 
     fig.tight_layout()
-    plt.savefig("3d-pulsations.pdf", bbox_inches='tight', pad_inches=0)
+    #plt.savefig("3d-pulsations.pdf", bbox_inches='tight', pad_inches=0)
     plt.show(block=True)
 
 def main():
@@ -96,13 +85,13 @@ def main():
 
             # Convert pandas datacolumns to numpy arrays
             time_data = df['time'].to_numpy()[0:500]     # [s]
-            speed_data = df['speed'].to_numpy()[0:500]   # [p.u.]
+            speed_data = df['speed'].to_numpy()[0:500]   # [pu.]
             speed_data = speed_data * 2000 # [rpm]
 
             # Shift to zero
             offset = np.mean(speed_data)
             speed_data = speed_data - offset
-
+            
             if "ilc-on" in file.lower():
                 print("file:", file)
                 ilc_times.append(time_data)
@@ -117,8 +106,6 @@ def main():
                 default_speeds.append(speed_data)
 
     plot(ilc_times, ilc_speeds, qlr_times, qlr_speeds, default_times, default_speeds)
-
-
 
 if __name__ == '__main__':
     main()

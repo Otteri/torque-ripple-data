@@ -15,22 +15,20 @@ color2 = 'indianred'
 color1 = 'royalblue'
 
 def simulationPlot(filename, times, torques, dpi, label, color):
-    #torques = torques * 28.6
     plt.ylabel("Amplitude [p.u.]", fontsize=16)
     plt.xlabel("Time [s]", fontsize=16)
     plt.plot(times, torques, label=label, color=color, linewidth=0.8)
-    #plt.legend(loc='upper right', prop={'size': 14})
     plt.xlim((500, 501))
 
 def main():
 
-    directory_path = input("Give full path to the directory:\n")
+    #directory_path = input("Give full path to the directory:\n")
+    directory_path = "./simulation-data/MS4887-simulations/pulsations/"
     os.chdir(directory_path)
     print("Files from '{}' will be processed.\n".format(os.getcwd()))
 
-    #fig, ax1 = plt.subplots(figsize=(16,10), dpi=80)
     axs = []
-    fig, axes = plt.subplots(3) #sharey=True
+    fig, axes = plt.subplots(3)
     for ax1 in axes:
         ax1.set(xlim=(500, 501))
         ax2 = ax1.twinx()

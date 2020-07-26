@@ -50,11 +50,11 @@ for path in subdirectories:
 
 # copy certain SDM data to individual folder
 copy_files = [
-    "./processed/PI-ILC-SDM251-elec/ILC-OFF_0%-load_060rpm_3filt.Monitor(1).csv",
-    "./processed/PI-ILC-SDM251-elec/ILC-OFF_0%-load_120rpm_3filt.Monitor(1).csv",
-    "./processed/PI-ILC-SDM251-elec/ILC-OFF_0%-load_240rpm_3filt.Monitor(1).csv",
-    "./processed/PI-ILC-SDM251-elec/ILC-OFF_0%-load_360rpm_3filt.Monitor(1).csv",
-    "./processed/PI-ILC-SDM251-elec/ILC-OFF_0%-load_480rpm_3filt.Monitor(1).csv",
+    "./processed/PI-QLR-SDM251/Qlr-OFF_0%-load_060rpm.Monitor(1).csv",
+    "./processed/PI-QLR-SDM251/Qlr-OFF_0%-load_120rpm.Monitor(1).csv",
+    "./processed/PI-QLR-SDM251/Qlr-OFF_0%-load_240rpm.Monitor(1).csv",
+    "./processed/PI-QLR-SDM251/Qlr-OFF_0%-load_360rpm.Monitor(1).csv",
+    "./processed/PI-QLR-SDM251/Qlr-OFF_0%-load_480rpm.Monitor(1).csv",
     "./processed/PI-ILC-SDM251-elec/ILC-ON_0%-load_1.5phi_0.9gamma_0.15alpha_060rpm_3filt.Monitor(1).csv",
     "./processed/PI-ILC-SDM251-elec/ILC-ON_0%-load_1.5phi_0.9gamma_0.15alpha_120rpm_3filt.Monitor(1).csv",
     "./processed/PI-ILC-SDM251-elec/ILC-ON_0%-load_1.5phi_0.9gamma_0.15alpha_240rpm_3filt.Monitor(1).csv",
@@ -62,9 +62,9 @@ copy_files = [
     "./processed/PI-ILC-SDM251-elec/ILC-ON_0%-load_1.5phi_0.9gamma_0.15alpha_480rpm_3filt.Monitor(1).csv",
     "./processed/PI-QLR-SDM251/Qlr-ON_060rpm_0.03T_0.3alpha_32lambda.Monitor(1).csv",
     "./processed/PI-QLR-SDM251/Qlr-ON_120rpm_0.03T_0.3alpha_32lambda.Monitor(1).csv",
-    "./processed/PI-QLR-SDM251/Qlr-ON_240rpm_0.03T_0.3alpha_32lambda.Monitor(1).csv",
-    "./processed/PI-QLR-SDM251/Qlr-ON_360rpm_0.03T_0.3alpha_32lambda.Monitor(1).csv",
-    "./processed/PI-QLR-SDM251/Qlr-ON_480rpm_0.03T_0.3alpha_32lambda.Monitor(1).csv",
+    "./processed/PI-QLR-SDM251/Qlr-ON_240rpm_0.03T_0.3alpha_32lambda_trained120rpm.Monitor(1).csv",
+    "./processed/PI-QLR-SDM251/Qlr-ON_360rpm_0.03T_0.3alpha_32lambda_trained60rpm.Monitor(1).csv",
+    "./processed/PI-QLR-SDM251/Qlr-ON_480rpm_0.03T_0.3alpha_32lambda_trained60rpm.Monitor(1).csv",
 ]
 
 for file in copy_files:

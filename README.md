@@ -1,70 +1,53 @@
 # torque-ripple-data
-Contains measurement and simulation data as well as scripts for visualizing the data.
+Contains scripts, measurement, simulation and FEM data. Scripts can be used for processing and visualizing the data.
+All FEM data was collected using a model of 160-kW PM motor. Experimental test data was collected using a resolver, torque transducer and two different PM motors: SDM251 (0.72 kW) and MS4887 (6 kW). The measured data in `experimental-data` must be converted to CSV-format before it can be plotted.
 
-All FEM data was collected using a model of 160-kW PM motor. Experimental data was collected using two different PM motors: SDM251 and MS4887.
-The experimental data must be first converted to CSV-format, before it can be plotted.
-
-## Preprocess data
-1. Convert measured data into csv-format:  
-cd to data-analysis directory (repository root)
-2. Copy data to preserve the original files and avoid mixing different formats:  
-`cp -r ./experimental-data/PI-ILC-MS4887/motoring/60rpm-speed ./experimental-data/PI-ILC-MS4887/motoring/60rpm-speed/csv`
-3. Process data. Convert it to csv format and scale values:  
-if speed data, then:
-python preprocess --convert 1,2000
-Give directory path: ./experimental-data/PI-ILC-MS4887/motoring/60rpm-speed/csv
-Since data is in .txt format, select 3
-Because we already copeied the data, it is okay to delete the original files. Select y.
-If torque data, then scale with:
-python preprocess --convert 1,-1 and do the same as above.
-
+## Data preprocessing
+Some data files must be converted to CSV-format and scaled. Preprocessing can be done fully automatically by calling:  
+`$ python auto-preprocess.py`,   
+which converts and scales the data using other scripts in the repository. The use of `auto-preprocess.py` script is encouraged, as it should do the scaling correctly and it moves the processed data into predetermined folder location, which allows the examples below to be executed as is.
 
 ## Examples calls
-Examples showing how scripts can be used for plotting.
+Examples showing how scripts can be used for plotting data.
 
-### barchart3d.py
+#### barchart3d.py
+Creates a 3D barchart showing cogging torque of the 160-kw motor used in the FEM simulations.  
 `$ python barchart3d.py`
 
-### compare-harmonics.py
+#### compare-harmonics.py
 Produces four amplitude spectrums that are side to side.  
 `$ python compare-harmonics.py --poles 8 --run_speed 60 --is_ilc 0 --is_torque 0 --folder ./processed/PI-QLR-MS4887/speed_60rpm/`
 `$ python compare-harmonics.py --poles 8 --run_speed 60 --is_ilc 1 --is_torque 0 --folder ./processed/PI-ILC-MS4887/motoring/60rpm-speed/`
 
-### compare-speed-ripple.py
+#### compare-speed-ripple.py
 Produces four time domain speed graphs.  
 `$ python compare-speed-ripple.py --is_ilc 0 --folder ./processed/PI-QLR-MS4887/speed_60rpm/`
 `$ python compare-speed-ripple.py --is_ilc 1 --folder ./processed/PI-ILC-MS4887/motoring/60rpm-speed/`
 
-### compute-ripple.py
-Calculates ripple factor using provided data
+#### compute-ripple.py
+Calculates ripple factor using provided data (only prints).  
 `$ python compute-ripple.py --run_speed 60 --nominal 2000 -f1 "./processed/PI-QLR-MS4887/speed_60rpm/Qlr-ON_80%-load_T0.04_lambda1.0.Monitor(1).csv" -f2 "./processed/PI-QLR-MS4887/speed_60rpm/Qlr-OFF_80%-load.Monitor(1).csv"`
 
-### plot.py
-Current configuration can be used to generate the pulsation graph:  
+#### plot.py
+Current configuration generate the pulsation graph, but can be used for plotting various views:  
 `$ python plot.py --file "./simulation-data/FEM/torque-speed-pulsations.csv"`
 
-### pulsations3d.py
-The data needs to be processed first and then placed to: experimental-data\\SDM  
+#### pulsations3d.py
+Creates 3D plot showing speed pulsations with PI, ILC and Q-learning (15 measurements in total).  
 `$ python pulsations3d.py`
 
-### sim-harmonics.py
-Creates frequency domain plots that show compensation harmonics and disturbance harmonics.  
-`$python sim-harmonics.py "<some .npy file>"`
+#### sim-harmonics.py
+Creates frequency domain plots that shows compensation and disturbance harmonics simultaneously.  
+`$ python sim-harmonics.py --file1 "./simulation-data/MS4887-simulations/compensation/ilc_on_data_4.75phi_1.0gamma_0.15alpha_10%-noise.npy"`
 
-### simplot.py
+#### simplot.py
 Simulated speed and torque pulsations.  
 `$ python simplot.py`  
-Then give path to simulation-data/MS4887-simulations/pulsations
-
-### Unused scripts
-These scripts are functional, but were never used for producing images to the thesis.
 
 #### compare.py
-Either plot only speed/torque measurements by providing only three paths.
-It is also possible to plot torque and speed to same view providing three speed measurements and three torque measurements.
-`$ python compare.py --poles 8 --run_speed 60 --save 1 --file1 "<file1 path>" --file2 "<file2 path>" --file3 "<file3 path>"`
-`$ python compare.py --poles 8 --run_speed 60 --save 1 --file1 "<file1 path>" --file2 "<file2 path>" --file3 "<file3 path>" --file4 "<file4 path>" --file5 "<file5 path>" --file6 "<file6 path>"`
+Plot three (or six) different measurements into same plot view. This plotting script was never used, as compensators should not be compared directly. Example call:  
+`$ python compare.py --poles 8 --run_speed 60 --save 1 --file1 "./processed/PI-QLR-MS4887/speed_60rpm/Qlr-OFF_50%-load.Monitor(1).csv" --file2 "./processed/PI-ILC-MS4887/motoring/60rpm-speed/ILC-ON_50%-load_2.8phi_1.0gamma_0.15alpha.Monitor(1).csv" --file3 "./processed/PI-QLR-MS4887/speed_60rpm/Qlr-ON_10%-load_T0.02_lambda1.0.Monitor(1).csv"`
 
 #### harmonics.py
-Plots frequency spectrum of all files in a directory. Very convinient script for quickly checking the harmonics. Just call the script and then provide path when it is asked.  
+Plots frequency spectrum of all files in a directory. Very convinient script for quickly checking the harmonics. Just call the script and then provide directory path when it is asked.  
 `$ python harmonics.py`
