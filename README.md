@@ -28,7 +28,7 @@ Produces four amplitude spectrums that are side to side.
 
 #### compare-speed-ripple.py
 Produces four time domain speed graphs.  
-`$ python compare-speed-ripple.py --is_ilc 0 --folder ./processed/PI-QLR-MS4887/speed_60rpm/`
+`$ python compare-speed-ripple.py --is_ilc 0 --folder ./processed/PI-QLR-MS4887/speed_60rpm/`  
 `$ python compare-speed-ripple.py --is_ilc 1 --folder ./processed/PI-ILC-MS4887/motoring/60rpm-speed/`
 
 #### compute-ripple.py

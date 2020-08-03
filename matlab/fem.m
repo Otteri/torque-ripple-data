@@ -8,7 +8,7 @@ clear;
 
 
 % These values are from motor nameplate
-P = 160000;    % watt
+P = 160000; % watt
 rpm = 3100; % rad/min
 T_nom = getNominalTorque(P, rpm); % Calculate nominal torque
 
